@@ -1,3 +1,4 @@
+import 'package:evidencni_karton_voznje/services/theme_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: _appBar(),
         body: Column(
           children: [
             Text("Theme Data",
@@ -23,5 +24,22 @@ class _HomePageState extends State<HomePage> {
           ],
         )
       );
+  }
+
+  _appBar() {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: (){
+          ThemeService().switchTheme();
+        },
+        child: Icon(Icons.nightlight_round,
+        size: 20,),
+      ),
+      actions: [
+        Icon(Icons.person,
+        size: 20,),
+        SizedBox(width: 20,)
+      ],
+    );
   }
 }
