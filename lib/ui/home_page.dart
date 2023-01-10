@@ -1,6 +1,10 @@
 import 'package:evidencni_karton_voznje/services/theme_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../services/notification_services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,6 +14,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var notifyHelper;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notifyHelper = NotifyHelper();
+    notifyHelper.initializeNotification();
+    notifyHelper.requestIOSPermissions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +45,11 @@ class _HomePageState extends State<HomePage> {
       leading: GestureDetector(
         onTap: (){
           ThemeService().switchTheme();
+          notifyHelper.displayNotification(
+              title: "Theme changed",
+              body: Get.isDarkMode?"Activated Light Theme":"Activated Dark Theme"
+          );
+          notifyHelper.scheduledNotification();//pokličemo tole da se notifikacija sproži x sec kasneje
         },
         child: Icon(Icons.nightlight_round,
         size: 20,),

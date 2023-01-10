@@ -16,12 +16,12 @@ const primaryClr = bluishClr;
 
 class Themes {
   static final light= ThemeData(
-  primarySwatch: bluishClr,
+  colorSchemeSeed: bluishClr,
   brightness: Brightness.light,
   );
 
   static final dark= ThemeData(
-  primaryColor: darkGreyClr,
+  colorSchemeSeed: darkGreyClr,
   brightness: Brightness.dark,
   );
 }
