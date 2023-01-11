@@ -15,6 +15,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   DateTime _selectedDate = DateTime.now();
   String _endTime = "6:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
+  int _selectedRemind = 5; // tole je za reminder
+  List<int> remindList=[ //lista minut za reminder
+    15,
+    30,
+    45,
+    60,
+    120
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +59,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       hint: _startTime,
                       widget: IconButton(
                         onPressed: () {
-
+                          _getTimeFromUser(isStartTime:true);
                         },
                         icon: Icon(
                           Icons.access_time_rounded,
@@ -67,7 +75,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         hint: _endTime,
                         widget: IconButton(
                           onPressed: () {
-
+                            _getTimeFromUser(isStartTime:false);
                           },
                           icon: Icon(
                             Icons.access_time_rounded,
@@ -77,7 +85,30 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                   ),
                 ],
-              )//tole je input za datum
+              ), //tole je input za datum
+              MyInputField(title: "Opomnik", hint: "$_selectedRemind minut prej",
+                  widget: DropdownButton(
+                    icon: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.grey,
+                    ),
+                    iconSize: 32,
+                    elevation: 4,
+                    style: subTitleStyle,
+                    underline: Container(height: 0,),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedRemind = int.parse(newValue!);
+                      });
+                    },
+                    items: remindList.map<DropdownMenuItem<String>>((int value) {
+                      return DropdownMenuItem<String>( //returnamo DropdownMenuItem kot string
+                        value: value.toString(),
+                        child:Text(value.toString())
+                      );
+                    }).toList(), //remindList sprejma liste oz. arraye
+                  ),
+              ),
             ],
           ),
         ),
@@ -127,9 +158,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  _getTimeFromUser() { //tole je funkcija za dobit čas od uporabnika od koder bo izbran čas za začetek in konec
-    var pickedTime = _showTimePicker();
-
+  _getTimeFromUser({required bool isStartTime}) async { //tole je funkcija za dobit čas od uporabnika od koder bo izbran čas za začetek in konec
+    var pickedTime = await _showTimePicker();
+    String _formatedTime = pickedTime.format(context);
+    if(pickedTime==null){
+      print("Time canceled");
+    } else if(isStartTime==true) {
+      setState(() { //set state je da se vpisana ura shrani oziroma dejansko izpiše
+        _startTime=_formatedTime;
+      });
+    } else if(isStartTime==false) {
+      setState(() {
+        _endTime=_formatedTime;
+      });
+    }
   }
 
   _showTimePicker() {
@@ -137,8 +179,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       initialEntryMode: TimePickerEntryMode.input,
       context: context,
       initialTime: TimeOfDay(
-          hour: 9,
-          minute: 10
+        //_startTime --> 10:30 AM
+          hour: int.parse(_startTime.split(":")[0]), //tu splitamo uro
+          minute: int.parse(_startTime.split(":")[1].split(" ")[0]),
       ),
     );
   }
