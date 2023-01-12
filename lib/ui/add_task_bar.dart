@@ -5,6 +5,7 @@ import 'package:evidencni_karton_voznje/ui/widgets/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 import '../models/task.dart';
 
@@ -184,9 +185,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   _addTaskToDb() async {
+    if(_titleController.text.isNumericOnly)  {  //če je vneseno samo število, pred število napišemo "Ura"
+      _titleController.text = "Ura ${_titleController.text}";
+    }
     int value = await _taskController.addTask( //v int value shranimo id vnosa
         task: Task( //pošljemo podatke v naš model
-          note: _noteController.text,
+          note: " ${_noteController.text}",
           title: _titleController.text,
           date: DateFormat.yMd().format(_selectedDate),
           startTime: _startTime,
