@@ -21,8 +21,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController _titleController = TextEditingController(); //kontrolerja za shranjevanje podatkov
   final TextEditingController _noteController = TextEditingController(); //kontrolerja za shranjevanje podatkov
   DateTime _selectedDate = DateTime.now();
-  String _endTime = "6:30 PM";
-  String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
+  String _endTime = "16:30";
+  String _startTime = DateFormat("hh:mm").format(DateTime.now()).toString();
   int _selectedRemind = 30; // tole je za reminder
   List<int> remindList=[ //lista minut za reminder
     15,
@@ -305,9 +305,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       initialEntryMode: TimePickerEntryMode.input,
       context: context,
       initialTime: TimeOfDay(
-        //_startTime --> 10:30 AM
+        //_startTime --> 10:30
           hour: int.parse(_startTime.split(":")[0]), //tu splitamo uro
-          minute: int.parse(_startTime.split(":")[1].split(" ")[0]),
+          minute: int.parse(_startTime.split(":")[1]),
       ),
     );
   }

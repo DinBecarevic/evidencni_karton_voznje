@@ -59,20 +59,23 @@ class _HomePageState extends State<HomePage> {
             itemCount: _taskController.taskList.length, //število dodanih ur uporabnika
             
             itemBuilder: (_, index){ //itemBuilder je funkcija ki nam vrne widget
-              print(_taskController.taskList.length);
+              print("Dolžina seznama: ${_taskController.taskList.length}");
               Task task = _taskController.taskList[index]; //task je en vnos ure uporabnika
-              //print(task.toJson());
-              if(task.repeat == "Dnevno") { //če je ponavljanje dnevno pokažemo vnos ure uporabnika za vsak dan v kolendarju
+              print(task.toJson());
 
-                //scheduled Notifications
-                DateTime date = DateFormat.jm().parse(task.startTime.toString()); //pretvorimo čas v DateTime
-                var myTime = DateFormat("HH:mm").format(date); //pretvorimo DateTime v string, znebimo se AM oz. PM
-                notifyHelper.scheduledNotification(
-                  int.parse(myTime.toString().split(":")[0]), //ura
-                  int.parse(myTime.toString().split(":")[1]), //minuta
-                  task, //objekt (task)
-                );
-                //------------------------
+              //scheduled Notifications
+              //DateTime date = DateFormat.jm().parse(task.startTime.toString()); //pretvorimo čas v DateTime
+              //print(date);
+              //var myTime = DateFormat("HH:mm").format(date); //pretvorimo DateTime v string, znebimo se AM oz. PM
+              //print("myTime: $myTime");
+              notifyHelper.scheduledNotification(
+                int.parse(task.startTime.toString().split(":")[0]), //ura
+                int.parse(task.startTime.toString().split(":")[1]), //minuta
+                task, //objekt (task)
+              );
+              //------------------------
+
+              if(task.repeat == "Dnevno") { //če je ponavljanje dnevno pokažemo vnos ure uporabnika za vsak dan v kolendarju
 
                 return AnimationConfiguration.staggeredList(
 
@@ -223,7 +226,7 @@ class _HomePageState extends State<HomePage> {
         initialSelectedDate: DateTime.now(),
         selectionColor: primaryClr,
         selectedTextColor: Colors.white,
-        dateTextStyle: GoogleFonts.lato(
+        dateTextStyle: GoogleFonts.rubik(
           textStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -237,7 +240,7 @@ class _HomePageState extends State<HomePage> {
             color: Colors.grey,
           ),
         ),
-        monthTextStyle: GoogleFonts.lato(
+        monthTextStyle: GoogleFonts.rubik(
           textStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
