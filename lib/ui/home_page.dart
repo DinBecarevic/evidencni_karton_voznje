@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
               : _bottomSheetButton( //če ni task completed prikažemo gumbke za urejanje in brisanje
                 label:"Ura končana",
                 onTap:(){
+                  _taskController.markTaskCompleted(task.id!);
                   Get.back(); //da zapremo
                 },
               clr: primaryClr,
@@ -117,7 +118,6 @@ class _HomePageState extends State<HomePage> {
               label:"Odstrani Uro",
               onTap:(){
                 _taskController.delete(task); //pokličemo delete funkcijo iz controllerja //task je pa dejansko "vnos" ki ga želimo odstraniti
-                _taskController.getTasks(); //pokličemo getTasks funkcijo iz controllerja da osvežimo listo
                 Get.back(); //da zapremo
               },
               clr: Colors.red[300]!,

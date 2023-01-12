@@ -49,4 +49,12 @@ class DBHelper {
     return await _db!.delete(_tableName, where: "id = ?", whereArgs: [task.id]); //where column = ? in gledamu še Args (argumente)
     //ko se delete izvrši vrne int
   }
+
+  static update(int id) async { //funkcija za update (da lahko Uro označimo kot končano)
+    return await _db!.rawUpdate('''
+      UPDATE tasks
+      SET isCompleted = ?
+      WHERE id = ?
+    ''', [1, id]);
+  }
 }

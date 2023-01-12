@@ -27,5 +27,11 @@ class TaskController extends GetxController {
 
   void delete(Task task) { //funkcija za brisanje vnosov uporabnika
     DBHelper.delete(task); //dobimo za katero se gre in pošljemo v DBHelper
+    getTasks(); //izvedemo še getTasks da se seznam osveži
+  }
+
+  void markTaskCompleted(int id) async { //funkcija za označevanje vnosov uporabnika kot končane
+    await DBHelper.update(id); //dobimo za katero se gre in pošljemo v DBHelper
+    getTasks(); //izvedemo še getTasks da se seznam osveži
   }
 }
