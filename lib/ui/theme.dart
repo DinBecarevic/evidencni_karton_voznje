@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const Color greenClr = Color(0xff6baa75);
-const Color redClr = Color(0xFFF34213);
-const Color marineClr = Color(0xFF384E77);
-const Color darkGreyClr2 = Color(0xFF121212);
+const primaryClr = greenClr;
 
-const bluishClr = Colors.indigo;
-const yellowClr = Colors.amber;
-const pinkClr = Colors.pink;
+const Color greenClr = Color(0xff6baa75);
+const Color marineClr = Color(0xFF16425B);
+const Color ylwClr = Color(0xff403d39);
+const Color redClr = Color(0xFFA23B72);
+
+const bluishClr = greenClr;
+const yellowClr = marineClr;
+const pinkClr = ylwClr;
+
+//const bluishClr = Colors.indigo;
+//const yellowClr = Colors.amber;
+//const pinkClr = Colors.pink;
+
+
 const white = Colors.white;
 const darkGreyClr = Colors.black;
+const Color darkGreyClr2 = Color(0xFF121212);
 const lightGreyClr = Colors.grey;
-
-const primaryClr = bluishClr;
-
 
 class Themes {
   static final light= ThemeData(
@@ -34,7 +40,7 @@ class Themes {
 
 //tole je "public method", lahka kličemo kjerkoli v projektu
 TextStyle get subHeadingStyle{ // style za on prvi row na vrhu
-  return GoogleFonts.lato (
+  return GoogleFonts.rubik (
     textStyle: TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.bold,
@@ -43,7 +49,7 @@ TextStyle get subHeadingStyle{ // style za on prvi row na vrhu
   );
 }
 TextStyle get headingStyle{ // drug styling
-  return GoogleFonts.lato (
+  return GoogleFonts.rubik (
     textStyle: TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.bold,
@@ -52,7 +58,7 @@ TextStyle get headingStyle{ // drug styling
   );
 }
 TextStyle get titleStyle{ // tretji styling
-  return GoogleFonts.lato (
+  return GoogleFonts.rubik (
     textStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
@@ -62,7 +68,7 @@ TextStyle get titleStyle{ // tretji styling
 }
 
 TextStyle get subTitleStyle{ // cetrti styling
-  return GoogleFonts.lato (
+  return GoogleFonts.rubik (
     textStyle: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,

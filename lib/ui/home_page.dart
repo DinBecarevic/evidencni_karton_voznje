@@ -60,24 +60,61 @@ class _HomePageState extends State<HomePage> {
             
             itemBuilder: (_, index){ //itemBuilder je funkcija ki nam vrne widget
               print(_taskController.taskList.length);
+              Task task = _taskController.taskList[index]; //task je en vnos ure uporabnika
+              //print(task.toJson());
+              if(task.repeat == "Dnevno") { //če je ponavljanje dnevno pokažemo vnos ure uporabnika za vsak dan v kolendarju
+
+                //scheduled Notifications
+                DateTime date = DateFormat.jm().parse(task.startTime.toString()); //pretvorimo čas v DateTime
+                var myTime = DateFormat("HH:mm").format(date); //pretvorimo DateTime v string, znebimo se AM oz. PM
+                notifyHelper.scheduledNotification(
+                  int.parse(myTime.toString().split(":")[0]), //ura
+                  int.parse(myTime.toString().split(":")[1]), //minuta
+                  task, //objekt (task)
+                );
+                //------------------------
 
                 return AnimationConfiguration.staggeredList(
-                  position: index,
-                  child: SlideAnimation(
-                    child: FadeInAnimation(
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              _showBottomSheet(context, _taskController.taskList[index]); //tu pokličemo funkcijo _showBottomSheet
-                            },
-                            child:TaskTile(_taskController.taskList[index])
+
+                    position: index,
+                    child: SlideAnimation(
+                      child: FadeInAnimation(
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: (){
+                                    _showBottomSheet(context, task); //tu pokličemo funkcijo _showBottomSheet
+                                  },
+                                  child:TaskTile(task)
+                              )
+                            ],
                           )
-                        ],
-                      )
-                    ),
-                  )
+                      ),
+                    )
                 );
+
+              }
+              if(task.date==DateFormat.yMd().format(_selectedDate)) { //če je datum vnosa uporabnika enak datumu izbranemu v kolendarju pokažemo vnos uporabnika
+                return AnimationConfiguration.staggeredList(
+                    position: index,
+                    child: SlideAnimation(
+                      child: FadeInAnimation(
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: (){
+                                    _showBottomSheet(context, task); //tu pokličemo funkcijo _showBottomSheet
+                                  },
+                                  child:TaskTile(task)
+                              )
+                            ],
+                          )
+                      ),
+                    )
+                );
+              } else { //če datum vnosa uporabnika ni enak datumu izbranemu v kolendarju ne pokažemo vnosa uporabnika, vrnemo prazen Container
+                return Container();
+              }
           });
       }),
     );
@@ -208,7 +245,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         onDateChange: (date) {
-          _selectedDate = date;
+          setState(() { //ko izberemo datum ga shranimo v _selectedDate
+            _selectedDate = date;
+          });
         },
       ),
     );
@@ -254,10 +293,10 @@ class _HomePageState extends State<HomePage> {
         onTap: (){
           ThemeService().switchTheme();
           notifyHelper.displayNotification(
-              title: "Theme changed",
-              body: Get.isDarkMode?"Activated Light Theme":"Activated Dark Theme"
+              title: "Tema spremenjena",
+              body: Get.isDarkMode?"Aktiviran Light Theme":"Aktiviran Dark Theme"
           );
-          notifyHelper.scheduledNotification();//pokličemo tole da se notifikacija sproži x sec kasneje
+          //notifyHelper.scheduledNotification(); //pokličemo tole da se notifikacija sproži x sec kasneje
         },
         child: Icon(Get.isDarkMode ? Icons.wb_sunny_outlined:Icons.nightlight_round,
         size: 20,

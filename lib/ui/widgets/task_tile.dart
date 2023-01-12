@@ -36,7 +36,7 @@ class TaskTile extends StatelessWidget {
               children: [
                 Text(
                   task?.title??"",
-                  style: GoogleFonts.lato(
+                  style: GoogleFonts.rubik(
                     textStyle: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class TaskTile extends StatelessWidget {
                     SizedBox(width: 4),
                     Text(
                       "${task!.startTime} - ${task!.endTime}",
-                      style: GoogleFonts.lato(
+                      style: GoogleFonts.rubik(
                         textStyle:
                         TextStyle(fontSize: 13, color: Colors.grey[100]),
                       ),
@@ -67,7 +67,7 @@ class TaskTile extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   task?.note??"",
-                  style: GoogleFonts.lato(
+                  style: GoogleFonts.rubik(
                     textStyle: TextStyle(fontSize: 15, color: Colors.grey[100]),
                   ),
                 ),
@@ -83,8 +83,8 @@ class TaskTile extends StatelessWidget {
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              task!.isCompleted == 1 ? "COMPLETED" : "TODO",
-              style: GoogleFonts.lato(
+              task!.isCompleted == 1 ? "KONČANO" : "",
+              style: GoogleFonts.rubik(
                 textStyle: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
