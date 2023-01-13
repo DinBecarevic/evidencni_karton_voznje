@@ -59,9 +59,9 @@ class _HomePageState extends State<HomePage> {
             itemCount: _taskController.taskList.length, //število dodanih ur uporabnika
             
             itemBuilder: (_, index){ //itemBuilder je funkcija ki nam vrne widget
-              print("Dolžina seznama: ${_taskController.taskList.length}");
+              //print("Dolžina seznama: ${_taskController.taskList.length}");
               Task task = _taskController.taskList[index]; //task je en vnos ure uporabnika
-              print(task.toJson());
+              //print(task.toJson());
 
               //scheduled Notifications
               //DateTime date = DateFormat.jm().parse(task.startTime.toString()); //pretvorimo čas v DateTime
@@ -76,50 +76,52 @@ class _HomePageState extends State<HomePage> {
               //------------------------
 
               if(task.repeat == "Dnevno") { //če je ponavljanje dnevno pokažemo vnos ure uporabnika za vsak dan v kolendarju
-
-                return AnimationConfiguration.staggeredList(
-
-                    position: index,
-                    child: SlideAnimation(
-                      child: FadeInAnimation(
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                  onTap: (){
-                                    _showBottomSheet(context, task); //tu pokličemo funkcijo _showBottomSheet
-                                  },
-                                  child:TaskTile(task)
-                              )
-                            ],
-                          )
-                      ),
-                    )
-                );
+                return _returnVnose(task, index);
+              }
+              if(task.repeat == "Tedensko") { //če je ponavljanje dnevno pokažemo vnos ure uporabnika za vsak dan v kolendarju
+                DateTime taskDate = DateFormat.yMd().parse(task.date!);
+                if((_selectedDate.difference(taskDate).inDays % 7 == 0) && (_selectedDate.isAfter(taskDate) || _selectedDate.isAtSameMomentAs(taskDate))){ //če je razlika med izbranim datumom in datumom vnosa ure uporabnika deljiva z 7 in je izbrani datum večji ali enak kot datum vnosa ure uporabnika
+                  return _returnVnose(task, index);
+                }
+              }
+              if(task.repeat == "Mesečno") {
+                DateTime taskDate = DateFormat.yMd().parse(task.date!);
+                DateTime danVmesesu = DateTime(_selectedDate.year, _selectedDate.month, taskDate.day); //vzamemo samo dan (npr. 13)
+                int monthDifference = _selectedDate.month - taskDate.month + (_selectedDate.year - taskDate.year) * 12; //preverimo ali je razlika v mesecih med izbranim datumom in datumom opravila večkratnik 1
+                if (monthDifference % 1 == 0 && _selectedDate.day == danVmesesu.day) { //To bo preverilo, ali je razlika v mesecih med izbranim datumom in datumom opravila večkratnik 1, tako da bo opravilo vrnilo vsak mesec. & če je dan v mesecu enak danu v mesecu vnosa uporabnika
+                  return _returnVnose(task, index);
+                }
 
               }
               if(task.date==DateFormat.yMd().format(_selectedDate)) { //če je datum vnosa uporabnika enak datumu izbranemu v kolendarju pokažemo vnos uporabnika
-                return AnimationConfiguration.staggeredList(
-                    position: index,
-                    child: SlideAnimation(
-                      child: FadeInAnimation(
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                  onTap: (){
-                                    _showBottomSheet(context, task); //tu pokličemo funkcijo _showBottomSheet
-                                  },
-                                  child:TaskTile(task)
-                              )
-                            ],
-                          )
-                      ),
-                    )
-                );
-              } else { //če datum vnosa uporabnika ni enak datumu izbranemu v kolendarju ne pokažemo vnosa uporabnika, vrnemo prazen Container
+                return _returnVnose(task, index);
+              }
+              else { //če datum vnosa uporabnika ni enak datumu izbranemu v kolendarju ne pokažemo vnosa uporabnika, vrnemo prazen Container
                 return Container();
               }
           });
       }),
+    );
+  }
+
+  _returnVnose(Task task, int index) { //funkcija, da se ne ponavlja koda (ko je ponavljanje dnevno, tedensko, mesečno ali specifično)
+    return AnimationConfiguration.staggeredList(
+
+        position: index,
+        child: SlideAnimation(
+          child: FadeInAnimation(
+              child: Row(
+                children: [
+                  GestureDetector(
+                      onTap: (){
+                        _showBottomSheet(context, task); //tu pokličemo funkcijo _showBottomSheet
+                      },
+                      child:TaskTile(task)
+                  )
+                ],
+              )
+          ),
+        )
     );
   }
 
